@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>FizzBuzz問題</h1>
+  <form action="#">
+    <label for="fizz">FizzNum:
+      <input id="fizz" type="text" placeholder="整数値を入力してください" style="width: 180px;">
+    </label><br>
+    <label for="buzz">BuzzNum:
+      <input id="buzz" type="text" placeholder="整数値を入力してください" style="width: 180px;">
+    </label><br>
+    <button id="btn">実行</button>
+  </form>
+  <p>【出力】</p>
+  <ul style="list-style:none;padding: 0">
+  </ul>
+
+  <script>
+    "use strict"
+    {
+      // 配列を作る１から９９まで値
+      const source = [];
+      for (let i = 0; i < 99; i++) {
+        source[i] = i + 1;
+      };
+
+      // btnクリックでイベント発生
+      //DOMから要素取得
+      const btn = document.getElementById('btn');
+      const fizz = document.getElementById('fizz');
+      const buzz = document.getElementById('buzz');
+
+
+      btn.addEventListener('click', () => {
+        // クリック時li要素があれば全て削除しリセットする。
+        const liCheck = document.querySelector('li') != null;
+        if (liCheck === true) {
+          const ul = document.querySelector('ul');
+          ul.innerHTML = '';
+        }
+        //inputそれぞれの入力値の倍数を配列にする
+        const fizzNumbers = source.filter(number => number % fizz.value === 0);
+        const buzzNumbers = source.filter(number => number % buzz.value === 0);
+
+        //整数以外はエラーメッセージ！！
+        function check(numVal) {
+          let pattern = /^[+,-]?([1-9]\d*|0)$/;
+          return pattern.test(numVal)
+        };
+        function error(text) {
+          if (check(text.value) === false) {
+            const li = document.createElement('li');
+            li.textContent = '整数値を入力してください';
+            document.querySelector('ul').appendChild(li);
+          };
+        };
+        error(fizz, buzz);
+
+        //２つの配列を一つの配列にする
+        const addNumbersList = [...fizzNumbers, ...buzzNumbers]
+        //配列内の数値を昇順にする。
+        function sortNumber(a, b) {
+          return a - b;
+        };
+        addNumbersList.sort(sortNumber);
+        // 重複している値を削除したリストを作る
+        const numbersList = Array.from(new Set(addNumbersList));
+        //ループ処理で要素として表示する
+        for (let i = 0; i < numbersList.length; i++) {
+          //クリックイベン重複を関数にまとめ
+          function create(text) {
+            const li = document.createElement('li');
+            li.textContent = `${text} ${numbersList[i]}`;
+            document.querySelector('ul').appendChild(li);
+          };
+          if (numbersList[i] % fizz.value === 0) {
+            if (numbersList[i] % buzz.value === 0) {
+              create('FizzBuzz');
+            } else {
+              create('Fizz');
+            }
+          } else {
+            create('Buzz');
+          };
+        };
+      });
+    }
+
+
+  </script>
+</body>
+</html>
