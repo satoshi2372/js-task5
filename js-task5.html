@@ -23,44 +23,32 @@
   <script>
     "use strict"
     {
+      //javascript課題②
       // 配列を作る１から９９まで値
       const source = [];
       for (let i = 0; i < 99; i++) {
         source[i] = i + 1;
       };
-
-      // btnクリックでイベント発生
       //DOMから要素取得
       const btn = document.getElementById('btn');
       const fizz = document.getElementById('fizz');
       const buzz = document.getElementById('buzz');
 
-
+      //btnクリックイベント発生
       btn.addEventListener('click', () => {
         // クリック時li要素があれば全て削除しリセットする。
-        const liCheck = document.querySelector('li') != null;
-        if (liCheck === true) {
-          const ul = document.querySelector('ul');
-          ul.innerHTML = '';
-        }
+        function liCheck() {
+          const liCheck = document.querySelector('li') != null;
+          if (liCheck === true) {
+            const ul = document.querySelector('ul');
+            ul.innerHTML = '';
+          };
+        };
+        liCheck();
+
         //inputそれぞれの入力値の倍数を配列にする
         const fizzNumbers = source.filter(number => number % fizz.value === 0);
         const buzzNumbers = source.filter(number => number % buzz.value === 0);
-
-        //整数以外はエラーメッセージ！！
-        function check(numVal) {
-          let pattern = /^[+,-]?([1-9]\d*|0)$/;
-          return pattern.test(numVal)
-        };
-        function error(text) {
-          if (check(text.value) === false) {
-            const li = document.createElement('li');
-            li.textContent = '整数値を入力してください';
-            document.querySelector('ul').appendChild(li);
-          };
-        };
-        error(fizz, buzz);
-
         //２つの配列を一つの配列にする
         const addNumbersList = [...fizzNumbers, ...buzzNumbers]
         //配列内の数値を昇順にする。
@@ -88,6 +76,21 @@
             create('Buzz');
           };
         };
+        //整数以外はliをリセットしliでエラーメッセージ！！
+        function check(numVal) {
+          let pattern = /^[+,-]?([1-9]\d*|0)$/;
+          return pattern.test(numVal)
+        };
+        function error(text) {
+          if (check(text.value) === false) {
+            liCheck();
+            const li = document.createElement('li');
+            li.textContent = '整数値を入力してください';
+            document.querySelector('ul').appendChild(li);
+          };
+        };
+        error(fizz);
+        error(buzz);
       });
     }
 
